@@ -4,7 +4,7 @@ define([
 function (angular) {
   'use strict';
 
-  var module = angular.module('sample.services');
+  var module = angular.module('grafana.services');
 
   module.factory('SampleDatasource', function($q, backendSrv) {
 
