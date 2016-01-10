@@ -1,11 +1,13 @@
 {
   "pluginType": "datasource",
   "name": "Sample",
-  "builtIn": true,
+  "builtIn": false,
 
   "type": "sample",
   "serviceName": "SampleDatasource",
 
   "module": "app/plugins/datasource/sample/datasource",
   "metrics": true
+
+  "url": "http://api.worldbank.org"
 }
