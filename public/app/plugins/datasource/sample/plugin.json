@@ -7,7 +7,7 @@
   "serviceName": "SampleDatasource",
 
   "module": "app/plugins/datasource/sample/datasource",
-  "metrics": true
+  "metrics": true,
 
   "url": "http://api.worldbank.org"
 }
