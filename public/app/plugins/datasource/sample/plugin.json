@@ -8,6 +8,10 @@
 
   "module": "app/plugins/datasource/sample/datasource",
   "metrics": true,
+  
+  "partials": {
+	  "config": "app/plugins/datasource/sample/partials/config.html"
+   },
 
   "url": "http://api.worldbank.org"
 }
