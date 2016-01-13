@@ -1,0 +1,9 @@
+{
+  "pluginType": "panel",
+
+  "name": "Map",
+  "type": "map",
+
+  "module": "app/plugins/panels/map/module"  
+
+}
