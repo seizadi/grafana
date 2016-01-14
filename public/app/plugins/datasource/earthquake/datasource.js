@@ -6,15 +6,15 @@ function (angular) {
 
   var module = angular.module('grafana.services');
 
-  module.factory('SampleDatasource', function($q, backendSrv) {
+  module.factory('EarthquakeDatasource', function($q, backendSrv) {
 
-    function SampleDatasource(datasource) {
+    function EarthquakeDatasource(datasource) {
       this.name = datasource.name;
       this.type = datasource.type;
       this.url = datasource.url;
     }
 
-    SampleDatasource.prototype._get = function(relativeUrl, params) {
+    EarthquakeDatasource.prototype._get = function(relativeUrl, params) {
       return backendSrv.datasourceRequest({
         method: 'GET',
         url: this.url + (!relativeUrl ? '' : relativeUrl),
@@ -22,7 +22,7 @@ function (angular) {
       });
     };
 
-    SampleDatasource.prototype.testDatasource = function() {
+    EarthquakeDatasource.prototype.testDatasource = function() {
       return this._get().then(function() {
         return { status: "success", message: "Data source is working", title: "Success" };
       }, function(err) {
@@ -35,28 +35,15 @@ function (angular) {
     };
 
     function convert(result) {
-      var map = {}, nameIdx = 7, dateIdx = 7, countIdx = 7;
-      var columns = result.data.meta.view.columns;
-      columns.forEach(function(col) {
-        switch(col.fieldName) {
-        case 'continuum_of_care':
-          nameIdx += col.position;
-          break;
-        case 'date':
-          dateIdx += col.position;
-          break;
-        case 'indicatorvalue':
-          countIdx += col.position;
-          break;
-        }
-      });
-      result.data.data.forEach(function(row) {
-        var dp = map[nameIdx];
+      var map = {};
+      result.data.features.forEach(function(row) {
+        var props = row.properties;
+        var dp = map[props.alert];
         if(!dp) {
           dp = [];
-          map[row[nameIdx]] = dp;
+          map[props.alert] = dp;
         }
-        dp.push([row[countIdx], (new Date(dateIdx)).getTime()]);
+        dp.push([props.mag, props.updated, row.geometry]);
       });
       var dataSeries = [];
       for (var key in map) {
@@ -68,17 +55,25 @@ function (angular) {
       return {data: dataSeries};
     }
 
-    SampleDatasource.prototype.query = function() {
-      return this._get('/f29j-qgmr/rows.json').then(function(result) {
+    EarthquakeDatasource.prototype.query = function(options) {
+      var params = {'starttime': parseDate(options.range.from),
+          'endtime': parseDate(options.range.to),
+          'minmagnitude' : 6,
+          'format': 'geojson'};
+      return this._get('/query', params).then(function(result) {
         return convert(result);
       });
     };
 
-    SampleDatasource.prototype.metricFindQuery = function() {
+    function parseDate(milli) {
+      return new Date(milli).toISOString().slice(0, 10);
+    }
+
+    EarthquakeDatasource.prototype.metricFindQuery = function() {
       return $q.when([]);
     };
 
-    return SampleDatasource;
+    return EarthquakeDatasource;
 
   });
 

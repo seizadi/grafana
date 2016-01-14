@@ -1,0 +1,16 @@
+{
+  "pluginType": "datasource",
+  "name": "Earthquake",
+  "builtIn": false,
+
+  "type": "earthquake",
+  "serviceName": "EarthquakeDatasource",
+
+  "module": "app/plugins/datasource/earthquake/datasource",
+  "metrics": true,
+  
+  "partials": {
+	  "config": "app/plugins/datasource/earthquake/partials/config.html"
+   }
+
+}
