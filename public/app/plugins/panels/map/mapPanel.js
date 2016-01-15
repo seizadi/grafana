@@ -25,7 +25,7 @@ function (angular, app, _, $, L) {
         });
 
         function buildAnnotationCache(events) {
-          if(!events || events.length == 0) {
+          if(!events || events.length === 0) {
             annotations = null;
             return;
           }

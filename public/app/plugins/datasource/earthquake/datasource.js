@@ -34,6 +34,8 @@ function (angular) {
       });
     };
 
+    var isoFormat = "YYYY-MM-DD";
+
     function convert(result) {
       var map = {};
       result.data.features.forEach(function(row) {
@@ -56,8 +58,8 @@ function (angular) {
     }
 
     EarthquakeDatasource.prototype.query = function(options) {
-      var params = {'starttime': parseDate(options.range.from),
-          'endtime': parseDate(options.range.to),
+      var params = {'starttime': options.range.from.format(isoFormat),
+          'endtime': options.range.to.format(isoFormat),
           'minmagnitude' : 6,
           'format': 'geojson'};
       return this._get('/query', params).then(function(result) {
@@ -65,17 +67,13 @@ function (angular) {
       });
     };
 
-    function parseDate(milli) {
-      return new Date(milli).toISOString().slice(0, 10);
-    }
-
     EarthquakeDatasource.prototype.metricFindQuery = function() {
       return $q.when([]);
     };
 
     EarthquakeDatasource.prototype.annotationQuery = function(options) {
-      var params = {'starttime': parseDate(options.range.from),
-          'endtime': parseDate(options.range.to),
+      var params = {'starttime': options.range.from.format(isoFormat),
+          'endtime': options.range.to.format(isoFormat),
           'minmagnitude' : 6,
           'format': 'geojson'};
       return this._get('/query', params).then(function(result) {
