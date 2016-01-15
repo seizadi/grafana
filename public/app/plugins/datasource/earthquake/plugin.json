@@ -8,6 +8,7 @@
 
   "module": "app/plugins/datasource/earthquake/datasource",
   "metrics": true,
+  "annotations": true,
   
   "partials": {
 	  "config": "app/plugins/datasource/earthquake/partials/config.html"

@@ -15,12 +15,25 @@ function (angular, app, _, $, L) {
 
     return {
       link: function(scope, elem) {
-        var data, panel, map, circles = [];
+        var data, annotations, panel, map, circles = [];
 
         scope.$on('render', function(event, renderData) {
+          data = renderData.data;
+          buildAnnotationCache(renderData.annotations);
           render(renderData);
           scope.panelRenderingComplete();
         });
+
+        function buildAnnotationCache(events) {
+          if(!events || events.length == 0) {
+            annotations = null;
+            return;
+          }
+          annotations = {};
+          events.forEach(function(event) {
+            annotations[event.tags] = event.title;
+          });
+        }
 
         function setElementHeight() {
           try {
@@ -63,20 +76,26 @@ function (angular, app, _, $, L) {
           if(!data) {
             return;
           }
+          if(data.length > 0 && data[0].datapoints[0].length < 3) {
+            return;
+          }
           data.forEach(function(row) {
             row.datapoints.forEach(function(dp) {
               var coords = dp[2].coordinates;
-              circles.push(L.circle([coords[0], coords[1]], dp[0]*10000, {
+              var circle = L.circle([coords[1], coords[0]], dp[0]*10000, {
                 color: row.target,
                 fillColor: '#f03',
                 fillOpacity: 0.5
-              }).addTo(map));
+              }).addTo(map);
+              if(annotations) {
+                circle.bindPopup(annotations[dp[3]]);
+              }
+              circles.push(circle);
             });
           });
         }
 
-        function render(renderData) {
-          data = renderData;
+        function render() {
           panel = scope.panel;
 
           setElementHeight();

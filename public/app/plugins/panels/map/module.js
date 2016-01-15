@@ -21,7 +21,7 @@ function (angular, app, _, kbn, TimeSeries, PanelMeta) {
     };
   });
 
-  module.controller('MapCtrl', function($scope, $rootScope, panelSrv, panelHelper) {
+  module.controller('MapCtrl', function($scope, $rootScope, panelSrv, panelHelper, annotationsSrv) {
 
     $scope.panelMeta = new PanelMeta({
       panelName: 'Map',
@@ -61,6 +61,8 @@ function (angular, app, _, kbn, TimeSeries, PanelMeta) {
     $scope.refreshData = function(datasource) {
       panelHelper.updateTimeRange($scope);
 
+      $scope.annotationsPromise = annotationsSrv.getAnnotations($scope.dashboard);
+
       return panelHelper.issueMetricQuery($scope, datasource)
         .then($scope.dataHandler, function(err) {
           $scope.series = [];
@@ -70,7 +72,19 @@ function (angular, app, _, kbn, TimeSeries, PanelMeta) {
     };
 
     $scope.dataHandler = function(results) {
-      panelHelper.broadcastRender($scope, results.data);
+      $scope.annotationsPromise
+      .then(function(annotations) {
+        $scope.panelMeta.loading = false;
+        results.annotations = annotations;
+        $scope.render(results);
+      }, function() {
+        $scope.panelMeta.loading = false;
+        $scope.render(results);
+      });
+    };
+
+    $scope.render = function(data) {
+      panelHelper.broadcastRender($scope, data);
     };
 
     $scope.init();

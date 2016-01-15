@@ -43,7 +43,7 @@ function (angular) {
           dp = [];
           map[props.alert] = dp;
         }
-        dp.push([props.mag, props.updated, row.geometry]);
+        dp.push([props.mag, props.time, row.geometry, row.id]);
       });
       var dataSeries = [];
       for (var key in map) {
@@ -72,6 +72,32 @@ function (angular) {
     EarthquakeDatasource.prototype.metricFindQuery = function() {
       return $q.when([]);
     };
+
+    EarthquakeDatasource.prototype.annotationQuery = function(options) {
+      var params = {'starttime': parseDate(options.range.from),
+          'endtime': parseDate(options.range.to),
+          'minmagnitude' : 6,
+          'format': 'geojson'};
+      return this._get('/query', params).then(function(result) {
+        return makeAnnotations(result, options.annotation);
+      });
+    };
+
+    function makeAnnotations(result, annotation) {
+      var events = [];
+      result.data.features.forEach(function(row) {
+        var props = row.properties;
+        var data = {
+            annotation: annotation,
+            time: props.time,
+            title: props.title,
+            tags: row.id,
+            text: null
+          };
+        events.push(data);
+      });
+      return events;
+    }
 
     return EarthquakeDatasource;
 
