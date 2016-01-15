@@ -7,7 +7,7 @@ function (angular) {
   var module = angular.module('sample.directives');
 
   module.directive('metricQueryEditorEarthquake', function() {
-    return {templateUrl: 'app/plugins/datasource/sample/partials/query.editor.html'};
+    return {templateUrl: 'app/plugins/datasource/earthquake/partials/query.editor.html'};
   });
 
 });

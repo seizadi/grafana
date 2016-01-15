@@ -30,6 +30,20 @@ function (angular, app, _, kbn, TimeSeries, PanelMeta) {
       metricsEditor: true
     });
 
+    // Set and populate defaults
+    var _d = {
+      links: [],
+      datasource: null,
+      maxDataPoints: 3,
+      interval: null,
+      targets: [{}],
+      cacheTimeout: null,
+      nullText: null,
+      nullPointMode: 'connected'
+    };
+
+    _.defaults($scope.panel, _d);
+
     $scope.panelMeta.addEditorTab('Options', 'public/plugins/map/editor.html');
     $scope.panelMeta.addEditorTab('Time range', 'app/features/panel/partials/panelTime.html');
 
