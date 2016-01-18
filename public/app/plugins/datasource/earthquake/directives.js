@@ -4,10 +4,11 @@ define([
 function (angular) {
   'use strict';
 
-  var module = angular.module('sample.directives');
+  var module = angular.module('grafana.directives');
 
   module.directive('metricQueryEditorEarthquake', function() {
-    return {templateUrl: 'app/plugins/datasource/earthquake/partials/query.editor.html'};
+    return {controller: 'EarthquakeQueryCtrl',
+      templateUrl: 'app/plugins/datasource/earthquake/partials/query.editor.html'};
   });
 
 });

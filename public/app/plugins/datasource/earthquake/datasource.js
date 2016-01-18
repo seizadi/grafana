@@ -1,5 +1,7 @@
 define([
-  'angular'
+  'angular',
+  './queryCtrl',
+  './directives'
 ],
 function (angular) {
   'use strict';
@@ -36,36 +38,43 @@ function (angular) {
 
     var isoFormat = "YYYY-MM-DD";
 
-    function convert(result) {
-      var map = {};
+    function convert(target, result) {
+      var dp = [];
       result.data.features.forEach(function(row) {
         var props = row.properties;
-        var dp = map[props.alert];
-        if(!dp) {
-          dp = [];
-          map[props.alert] = dp;
-        }
         dp.push([props.mag, props.time, row.geometry, row.id]);
       });
-      var dataSeries = [];
-      for (var key in map) {
-        var dp = map[key].sort(function(a,b) {
-          return a[1] - b[1];
-        });
-        dataSeries.push({'target': key, 'datapoints': dp});
-      }
-      return {data: dataSeries};
+      dp.sort(function(a,b) {
+        return a[1] - b[1];
+      });
+      return {'target': target.refId, 'datapoints': dp};
     }
 
     EarthquakeDatasource.prototype.query = function(options) {
-      var params = {'starttime': options.range.from.format(isoFormat),
-          'endtime': options.range.to.format(isoFormat),
-          'minmagnitude' : 6,
-          'format': 'geojson'};
-      return this._get('/query', params).then(function(result) {
-        return convert(result);
+      var self = this;
+      var promises = options.targets.map(function(target) {
+        return self._get('/query', createParams(options.range, target)).then(function(result) {
+          return convert(target, result);
+        });
+      });
+      return $q.all(promises).then(function(res) {
+        return {data: res};
       });
     };
+
+    function createParams(range, target) {
+      var params = {'starttime': range.from.format(isoFormat),
+          'endtime': range.to.format(isoFormat),
+          'minmagnitude' : 6, // set 6 by default to narrow search result
+          'format': 'geojson'};
+      if(target.magn) {
+        params.minmagnitude = parseInt(target.magn);
+      }
+      if(target.alert_level) {
+        params.alertlevel = target.alert_level;
+      }
+      return params;
+    }
 
     EarthquakeDatasource.prototype.metricFindQuery = function() {
       return $q.when([]);

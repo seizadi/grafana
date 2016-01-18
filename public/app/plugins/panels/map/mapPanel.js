@@ -62,10 +62,6 @@ function (angular, app, _, $, L) {
           L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           }).addTo(map);
-
-//          L.marker([51.5, -0.09]).addTo(map)
-//            .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-//            .openPopup();
         }
 
         function addCircles() {
@@ -83,7 +79,7 @@ function (angular, app, _, $, L) {
             row.datapoints.forEach(function(dp) {
               var coords = dp[2].coordinates;
               var circle = L.circle([coords[1], coords[0]], dp[0]*10000, {
-                color: row.target,
+                color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5
               }).addTo(map);
