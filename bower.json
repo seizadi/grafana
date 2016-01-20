@@ -19,6 +19,7 @@
     "angular-mocks": "~1.5.0",
     "angular-sanitize": "~1.5.0",
     "angular-bindonce": "~0.3.3",
-    "leaflet": "~0.7.7"
+    "leaflet": "~0.7.7",
+    "sigma": "~1.0.3"
   }
 }

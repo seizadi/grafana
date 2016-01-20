@@ -25,7 +25,8 @@ System.config({
     "jquery.flot.time": "vendor/flot/jquery.flot.time",
     "jquery.flot.crosshair": "vendor/flot/jquery.flot.crosshair",
     "jquery.flot.fillbelow": "vendor/flot/jquery.flot.fillbelow",
-    "leaflet": "vendor/leaflet/dist/leaflet"
+    "leaflet": "vendor/leaflet/dist/leaflet",
+    "sigma": "vendor/sigma/build/sigma"
   },
 
   packages: {
@@ -52,5 +53,9 @@ System.config({
       deps: ['jquery'],
       exports: 'angular',
     },
+    'vendor/sigma/build/sigma.js': {
+      format: 'global',
+      exports: 'sigma'
+    }
   }
 });

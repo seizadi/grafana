@@ -13,7 +13,8 @@
   "expr": true,
   "indent": 2,
   "latedef": true,
-  "newcap": true,
+  /* remove warning because sigma constructor is in lowercase*/
+  "newcap": false,
   "noarg": true,
   "noempty": true,
   "undef": true,
