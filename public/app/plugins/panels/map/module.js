@@ -43,9 +43,6 @@ function (angular, app, _, kbn, TimeSeries, PanelMeta) {
 
     _.defaults($scope.panel, _d);
 
-    $scope.panelMeta.addEditorTab('Options', 'public/plugins/map/editor.html');
-    $scope.panelMeta.addEditorTab('Time range', 'app/features/panel/partials/panelTime.html');
-
     $scope.unitFormats = kbn.getUnitFormats();
 
     $scope.setUnitFormat = function(subItem) {
