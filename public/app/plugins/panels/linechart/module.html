@@ -10,12 +10,12 @@
 				<span class="small" ng-show="datapointsOutside">Datapoints outside time range <tip>Can be caused by timezone mismatch between browser and graphite server</tip></span>
 			</div>
 
-			<div grafana-graph class="histogram-chart" ng-dblclick="zoomOut()">
+			<div grafana-linechart class="histogram-chart" ng-dblclick="zoomOut()">
 			</div>
 
 		</div>
 
-		<div class="graph-legend-wrapper" ng-if="panel.legend.show" graph-legend></div>
+		<div class="graph-legend-wrapper" ng-if="panel.legend.show" linechart-legend></div>
 	</div>
 
 	<div class="clearfix"></div>

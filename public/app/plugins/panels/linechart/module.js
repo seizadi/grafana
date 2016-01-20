@@ -6,32 +6,32 @@ define([
   'app/core/time_series',
   'app/features/panel/panel_meta',
   './seriesOverridesCtrl',
-  './graph',
+  './chart',
   './legend',
 ],
 function (angular, _, moment, kbn, TimeSeries, PanelMeta) {
   'use strict';
 
-  var module = angular.module('grafana.panels.graph');
+  var module = angular.module('grafana.panels.linechart');
 
-  module.directive('grafanaPanelGraph', function() {
+  module.directive('grafanaPanelLinechart', function() {
     return {
-      controller: 'GraphCtrl',
-      templateUrl: 'app/plugins/panels/graph/module.html',
+      controller: 'LineChartCtrl',
+      templateUrl: 'app/plugins/panels/linechart/module.html',
     };
   });
 
-  module.controller('GraphCtrl', function($scope, $rootScope, panelSrv, annotationsSrv, panelHelper, $q) {
+  module.controller('LineChartCtrl', function($scope, $rootScope, panelSrv, annotationsSrv, panelHelper, $q) {
 
     $scope.panelMeta = new PanelMeta({
-      panelName: 'Graph',
+      panelName: 'Line Chart',
       editIcon:  "fa fa-bar-chart",
       fullscreen: true,
       metricsEditor: true,
     });
 
-    $scope.panelMeta.addEditorTab('Axes & Grid', 'app/plugins/panels/graph/axisEditor.html');
-    $scope.panelMeta.addEditorTab('Display Styles', 'app/plugins/panels/graph/styleEditor.html');
+    $scope.panelMeta.addEditorTab('Axes & Grid', 'app/plugins/panels/linechart/axisEditor.html');
+    $scope.panelMeta.addEditorTab('Display Styles', 'app/plugins/panels/linechart/styleEditor.html');
     $scope.panelMeta.addEditorTab('Time range', 'app/features/panel/partials/panelTime.html');
 
     $scope.panelMeta.addExtendedMenuItem('Export CSV', '', 'exportCsv()');

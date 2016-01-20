@@ -1,0 +1,8 @@
+{
+  "pluginType": "panel",
+
+  "name": "Line Chart",
+  "type": "linechart",
+
+  "module": "app/plugins/panels/linechart/module"
+}

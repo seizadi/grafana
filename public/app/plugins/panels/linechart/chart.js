@@ -4,7 +4,7 @@ define([
   'moment',
   'lodash',
   'app/core/utils/kbn',
-  './graph.tooltip',
+  './chart.tooltip',
   'jquery.flot',
   'jquery.flot.events',
   'jquery.flot.selection',
@@ -19,7 +19,7 @@ function (angular, $, moment, _, kbn, GraphTooltip) {
 
   var module = angular.module('grafana.directives');
 
-  module.directive('grafanaGraph', function($rootScope, timeSrv) {
+  module.directive('grafanaLinechart', function($rootScope, timeSrv) {
     return {
       restrict: 'A',
       template: '<div> </div>',

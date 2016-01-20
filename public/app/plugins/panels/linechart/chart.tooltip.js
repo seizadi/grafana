@@ -4,7 +4,7 @@ define([
 function ($) {
   'use strict';
 
-  function GraphTooltip(elem, dashboard, scope, getSeriesFn) {
+  function LineChartTooltip(elem, dashboard, scope, getSeriesFn) {
     var self = this;
 
     var $tooltip = $('<div id="tooltip">');
@@ -180,5 +180,5 @@ function ($) {
     return parseFloat(b.value) - parseFloat(a.value);
   }
 
-  return GraphTooltip;
+  return LineChartTooltip;
 });
