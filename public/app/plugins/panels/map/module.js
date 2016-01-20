@@ -5,8 +5,7 @@ define([
   'app/core/utils/kbn',
   'app/core/time_series',
   'app/features/panel/panel_meta',
-  './mapPanel',
-  './legend'
+  './mapPanel'
 ],
 function (angular, app, _, kbn, TimeSeries, PanelMeta) {
   'use strict';
