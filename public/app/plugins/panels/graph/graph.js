@@ -17,7 +17,10 @@ function (angular, app, _, $, sigma) {
       link: function(scope, elem) {
         var data, panel, graph;
 
-        scope.$on('render', function(event, renderData) {
+        scope.$on('render-graph', function(event, renderData) {
+          if(!renderData) {
+            return;
+          }
           data = renderData.data;
           render(renderData);
           scope.panelRenderingComplete();

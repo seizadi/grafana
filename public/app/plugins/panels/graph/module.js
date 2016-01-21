@@ -5,7 +5,7 @@ define([
   'app/core/utils/kbn',
   'app/core/time_series',
   'app/features/panel/panel_meta',
-  './graph'
+  './panel',
 ],
 function (angular, app, _, kbn, TimeSeries, PanelMeta) {
   'use strict';
@@ -17,7 +17,7 @@ function (angular, app, _, kbn, TimeSeries, PanelMeta) {
     return {
       controller: 'PanelCtrl',
       templateUrl: 'app/plugins/panels/graph/module.html'
-    };
+      };
   });
 
   module.controller('PanelCtrl', function($scope, $rootScope, panelSrv, panelHelper, annotationsSrv) {

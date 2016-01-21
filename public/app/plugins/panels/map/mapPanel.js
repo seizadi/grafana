@@ -18,6 +18,9 @@ function (angular, app, _, $, L) {
         var data, annotations, panel, map, circles = [];
 
         scope.$on('render', function(event, renderData) {
+          if(!renderData) {
+            return;
+          }
           data = renderData.data;
           buildAnnotationCache(renderData.annotations);
           render(renderData);
