@@ -1,0 +1,17 @@
+{
+  "pluginType": "datasource",
+  "name": "Neo4j 2.3.2",
+  "builtIn": false,
+
+  "type": "neo4j",
+  "serviceName": "Neo4jDatasource",
+
+  "module": "app/plugins/datasource/neo4j/datasource",
+  "metrics": true,
+  "annotations": true,
+  
+  "partials": {
+	  "config": "app/plugins/datasource/neo4j/partials/config.html"
+   }
+
+}
