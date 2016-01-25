@@ -3,7 +3,8 @@ define([
   'app/app',
   'lodash',
   'jquery',
-  'sigma'
+  'sigma',
+  'force2Atlas'
 ],
 function (angular, app, _, $, sigma) {
   'use strict';
@@ -15,14 +16,14 @@ function (angular, app, _, $, sigma) {
 
     return {
       link: function(scope, elem) {
-        var data, panel, graph;
+        var data, panel, sigmaInstance;
 
         scope.$on('render-graph', function(event, renderData) {
           if(!renderData) {
             return;
           }
           data = renderData.data;
-          render(renderData);
+          render();
           scope.panelRenderingComplete();
         });
 
@@ -50,53 +51,24 @@ function (angular, app, _, $, sigma) {
 
           setElementHeight();
 
-          if(graph) {
+          if(sigmaInstance) {
             return;
           }
 
-          /**
-           * This is a basic example on how to instantiate sigma. A random graph is
-           * generated and stored in the "graph" variable, and then sigma is instantiated
-           * directly with the graph.
-           *
-           * The simple instance of sigma is enough to make it render the graph on the on
-           * the screen, since the graph is given directly to the constructor.
-           */
-          var i,
-              N = 100,
-              E = 500,
-              g = {
-                nodes: [],
-                edges: []
-              };
-
-          // Generate a random graph:
-          for (i = 0; i < N; i++) {
-            g.nodes.push({
-              id: 'n' + i,
-              label: 'Node ' + i,
-              x: Math.random(),
-              y: Math.random(),
-              size: Math.random(),
-              color: '#666'
-            });
-          }
-
-          for (i = 0; i < E; i++) {
-            g.edges.push({
-              id: 'e' + i,
-              source: 'n' + (Math.random() * N | 0),
-              target: 'n' + (Math.random() * N | 0),
-              size: Math.random(),
-              color: '#ccc'
-            });
-          }
-
           // Instantiate sigma:
-          graph = new sigma({
-            graph: g,
-            container: elem[0]
+          sigmaInstance = new sigma.sigma({
+            graph: data,
+            renderer: {
+              // IMPORTANT:
+              // This works only with the canvas renderer, so the
+              // renderer type set as "canvas" is necessary here.
+              container: elem[0],
+              type: 'canvas'
+            },
+            settings: {defaultLabelColor: '#FFFFFF'}
           });
+
+//          sigmaInstance.startForceAtlas2();
         }
       }
     };

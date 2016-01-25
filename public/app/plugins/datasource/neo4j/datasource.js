@@ -51,7 +51,7 @@ function (angular) {
         });
       });
       return $q.all(promises).then(function(res) {
-        return {data: res};
+        return {data: res[0]};
       });
     };
 
@@ -65,7 +65,7 @@ function (angular) {
           data: {
             "statements": [
                            {
-                             "statement": "MATCH (n)-[r]->(m) where n.ip in ['6.155.145.206'] RETURN n AS FROM , r AS `->`, m AS to",
+                             "statement": "match(client)-[:Query]->(host)<-[r]-(Virus) return client, host, r, Virus limit 1000",
                              "resultDataContents": [
                                "row",
                                "graph"
@@ -78,12 +78,44 @@ function (angular) {
     };
 
     function convert(res) {
-//      console.log(res);
+      var g = {
+          nodes: [],
+          edges: []
+        }, nodeIds = {}, edgeIds = {},
+        colors={'Client': '#DE9BF9', 'FQDN': '#68BDF6', 'Host': '#6DCE9E'};
       res.data.results[0].data.forEach(function(row) {
-        if(row.graph.relationships.length>0) {
-          console.log(row.graph);
-        }
+        var graph = row.graph;
+        graph.nodes.forEach(function(node) {
+          if(!nodeIds[node.id]) {
+            nodeIds[node.id] = true;
+            var label = node.labels[0];
+            g.nodes.push({
+              id: node.id,
+              label: label === 'FQDN' ? node.properties.name: node.properties.ip,
+              x: Math.random(),
+              y: Math.random(),
+              size: 10,
+              color: colors[label]
+            });
+          }
+        });
+        graph.relationships.forEach(function(edge) {
+          if(!edgeIds[edge.id]) {
+            edgeIds[edge.id] = true;
+            g.edges.push({
+              id: edge.id,
+              source: edge.startNode,
+              target: edge.endNode,
+              size: 10,
+              color: '#ccc',
+              type: 'curvedArrow',
+              arrow: 'source',
+              label: "This is the label"
+            });
+          }
+        });
       });
+      return g;
     }
 
     Neo4jDatasource.prototype.metricFindQuery = function() {

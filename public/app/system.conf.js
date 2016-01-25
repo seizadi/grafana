@@ -26,7 +26,8 @@ System.config({
     "jquery.flot.crosshair": "vendor/flot/jquery.flot.crosshair",
     "jquery.flot.fillbelow": "vendor/flot/jquery.flot.fillbelow",
     "leaflet": "vendor/leaflet/dist/leaflet",
-    "sigma": "vendor/sigma/build/sigma"
+    "sigma": "vendor/sigma/build/sigma",
+    "force2Atlas": "vendor/sigma/build/plugins/sigma.layout.forceAtlas2.min.js"
   },
 
   packages: {
@@ -54,8 +55,11 @@ System.config({
       exports: 'angular',
     },
     'vendor/sigma/build/sigma.js': {
-      format: 'global',
-      exports: 'sigma'
+      format: 'global'
+//      exports: 'sigma'
+    },
+    'vendor/sigma/build/plugins/sigma.layout.forceAtlas2.min.js': {
+      format: 'global'
     }
   }
 });

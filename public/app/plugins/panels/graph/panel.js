@@ -17,6 +17,7 @@ function (angular, app, _, $) {
     return {
       templateUrl: 'app/plugins/panels/graph/panel.html',
       link: function(scope, elem) {
+        var data;
 
         $('.nav.nav-tabs a', elem).click(function (e) {
           e.preventDefault();
@@ -26,7 +27,7 @@ function (angular, app, _, $) {
           $('div[data-target*=' + attrVal + ']', elem).addClass('active');
           $(this).tab('show');
           if(attrVal === 'graph') {
-            scope.$broadcast('render-graph', 'test data');
+            scope.$broadcast('render-graph', data);
           }
         });
 
@@ -37,6 +38,7 @@ function (angular, app, _, $) {
             return;
           }
           scope.$broadcast('render-histogram', renderData);
+          data = renderData;
           scope.panelRenderingComplete();
         });
 
