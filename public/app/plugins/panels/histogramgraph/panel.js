@@ -9,13 +9,13 @@ define([
 function (angular, app, _, $) {
   'use strict';
 
-  var module = angular.module('grafana.panels.graph', []);
+  var module = angular.module('grafana.panels.histogramgraph', []);
   app.useModule(module);
 
   module.directive('panel', function() {
 
     return {
-      templateUrl: 'app/plugins/panels/graph/panel.html',
+      templateUrl: 'app/plugins/panels/histogramgraph/panel.html',
       link: function(scope, elem) {
         var data;
 

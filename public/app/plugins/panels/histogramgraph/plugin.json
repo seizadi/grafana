@@ -1,0 +1,9 @@
+{
+  "pluginType": "panel",
+
+  "name": "HistogramGraph",
+  "type": "histogramgraph",
+
+  "module": "app/plugins/panels/histogramgraph/module"  
+
+}

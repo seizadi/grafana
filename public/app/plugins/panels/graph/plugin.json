@@ -4,6 +4,5 @@
   "name": "Graph",
   "type": "graph",
 
-  "module": "app/plugins/panels/graph/module"  
-
+  "module": "app/plugins/panels/graph/module"
 }
