@@ -8,10 +8,10 @@ define([
 function (angular, app, _, $) {
   'use strict';
 
-  var module = angular.module('grafana.panels.histogramgraph', []);
+  var module = angular.module('grafana.directives', []);
   app.useModule(module);
 
-  module.directive('histogram', function() {
+  module.directive('tabHistogram', function() {
 
     return {
       link: function(scope, elem) {

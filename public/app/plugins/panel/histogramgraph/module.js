@@ -10,17 +10,14 @@ define([
 function (angular, app, _, kbn, TimeSeries, PanelMeta) {
   'use strict';
 
-  var module = angular.module('grafana.panels.histogramgraph');
-  app.useModule(module);
-
-  module.directive('grafanaPanelHistogramgraph', function() {
+  function panelDirective() {
     return {
-      controller: 'PanelCtrl',
-      templateUrl: 'app/plugins/panels/histogramgraph/module.html'
+      controller: PanelCtrl,
+      templateUrl: 'app/plugins/panel/histogramgraph/module.html'
       };
-  });
+  }
 
-  module.controller('PanelCtrl', function($scope, $rootScope, panelSrv, panelHelper, annotationsSrv) {
+  function PanelCtrl($scope, $rootScope, panelSrv, panelHelper, annotationsSrv) {
 
     $scope.panelMeta = new PanelMeta({
       panelName: 'Graph',
@@ -84,5 +81,9 @@ function (angular, app, _, kbn, TimeSeries, PanelMeta) {
     };
 
     $scope.init();
-  });
+  }
+
+  return {
+    panel: panelDirective
+  };
 });

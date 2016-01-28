@@ -1,8 +1,8 @@
 {
-  "pluginType": "panel",
+  "type": "panel",
 
   "name": "PieChart",
-  "type": "piechart",
+  "id": "piechart",
 
   "module": "app/plugins/panels/piechart/module",
 

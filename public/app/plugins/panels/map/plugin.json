@@ -1,8 +1,8 @@
 {
-  "pluginType": "panel",
+  "type": "panel",
 
   "name": "Map",
-  "type": "map",
+  "id": "map",
 
   "module": "app/plugins/panels/map/module"  
 

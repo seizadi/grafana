@@ -1,8 +1,8 @@
 {
-  "pluginType": "datasource",
+  "type": "datasource",
   "name": "Zabbix",
 
-  "type": "zabbix",
+  "id": "zabbix",
   "serviceName": "ZabbixAPIDatasource",
 
   "module": "app/plugins/datasource/zabbix/datasource",

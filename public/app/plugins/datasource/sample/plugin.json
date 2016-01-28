@@ -1,9 +1,9 @@
 {
-  "pluginType": "datasource",
+  "type": "datasource",
   "name": "Sample",
   "builtIn": false,
 
-  "type": "sample",
+  "id": "sample",
   "serviceName": "SampleDatasource",
 
   "module": "app/plugins/datasource/sample/datasource",

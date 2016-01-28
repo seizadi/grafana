@@ -9,10 +9,10 @@ define([
 function (angular, app, _, $, sigma) {
   'use strict';
 
-  var module = angular.module('grafana.panels.histogramgraph', []);
+  var module = angular.module('grafana.directives', []);
   app.useModule(module);
 
-  module.directive('graph', function() {
+  module.directive('tabGraph', function() {
 
     return {
       link: function(scope, elem) {

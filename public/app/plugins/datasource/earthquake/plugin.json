@@ -1,9 +1,9 @@
 {
-  "pluginType": "datasource",
+  "type": "datasource",
   "name": "Earthquake",
   "builtIn": false,
 
-  "type": "earthquake",
+  "id": "earthquake",
   "serviceName": "EarthquakeDatasource",
 
   "module": "app/plugins/datasource/earthquake/datasource",
