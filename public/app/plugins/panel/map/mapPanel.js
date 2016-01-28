@@ -8,7 +8,7 @@ define([
 function (angular, app, _, $, L) {
   'use strict';
 
-  var module = angular.module('grafana.panels.map', []);
+  var module = angular.module('grafana.directives', []);
   app.useModule(module);
 
   module.directive('mapPanel', function() {

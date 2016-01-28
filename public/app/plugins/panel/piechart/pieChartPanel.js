@@ -9,7 +9,7 @@ define([
 function (angular, app, _, $) {
   'use strict';
 
-  var module = angular.module('grafana.panels.piechart', []);
+  var module = angular.module('grafana.directives', []);
   app.useModule(module);
 
   module.directive('piechartPanel', function() {
