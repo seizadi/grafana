@@ -1,9 +1,0 @@
-{
-  "type": "panel",
-
-  "name": "Map",
-  "id": "map",
-
-  "module": "app/plugins/panels/map/module"  
-
-}

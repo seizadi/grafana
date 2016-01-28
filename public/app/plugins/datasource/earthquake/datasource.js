@@ -1,22 +1,17 @@
 define([
-  'angular',
-  './queryCtrl',
-  './directives'
+  './queryCtrl'
 ],
-function (angular) {
+function () {
   'use strict';
 
-  var module = angular.module('grafana.services');
+  function EarthquakeDatasource(instanceSettings, $q, backendSrv) {
+    this.name = instanceSettings.name;
+    this.type = instanceSettings.type;
+    this.url = instanceSettings.url;
 
-  module.factory('EarthquakeDatasource', function($q, backendSrv) {
+    var isoFormat = "YYYY-MM-DD";
 
-    function EarthquakeDatasource(datasource) {
-      this.name = datasource.name;
-      this.type = datasource.type;
-      this.url = datasource.url;
-    }
-
-    EarthquakeDatasource.prototype._get = function(relativeUrl, params) {
+    this._get = function(relativeUrl, params) {
       return backendSrv.datasourceRequest({
         method: 'GET',
         url: this.url + (!relativeUrl ? '' : relativeUrl),
@@ -24,7 +19,7 @@ function (angular) {
       });
     };
 
-    EarthquakeDatasource.prototype.testDatasource = function() {
+    this.testDatasource = function() {
       return this._get().then(function() {
         return { status: "success", message: "Data source is working", title: "Success" };
       }, function(err) {
@@ -35,8 +30,6 @@ function (angular) {
         }
       });
     };
-
-    var isoFormat = "YYYY-MM-DD";
 
     function convert(target, result) {
       var dp = [];
@@ -50,7 +43,7 @@ function (angular) {
       return {'target': target.refId, 'datapoints': dp};
     }
 
-    EarthquakeDatasource.prototype.query = function(options) {
+    this.query = function(options) {
       var self = this;
       var promises = options.targets.map(function(target) {
         return self._get('/query', createParams(options.range, target)).then(function(result) {
@@ -76,11 +69,11 @@ function (angular) {
       return params;
     }
 
-    EarthquakeDatasource.prototype.metricFindQuery = function() {
+    this.metricFindQuery = function() {
       return $q.when([]);
     };
 
-    EarthquakeDatasource.prototype.annotationQuery = function(options) {
+    this.annotationQuery = function(options) {
       var params = {'starttime': options.range.from.format(isoFormat),
           'endtime': options.range.to.format(isoFormat),
           'minmagnitude' : 6,
@@ -106,8 +99,7 @@ function (angular) {
       return events;
     }
 
-    return EarthquakeDatasource;
+  }
 
-  });
-
+  return EarthquakeDatasource;
 });

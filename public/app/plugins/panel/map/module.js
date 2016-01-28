@@ -10,17 +10,14 @@ define([
 function (angular, app, _, kbn, TimeSeries, PanelMeta) {
   'use strict';
 
-  var module = angular.module('grafana.panels.map');
-  app.useModule(module);
-
-  module.directive('grafanaPanelMap', function() {
+  function panelMap() {
     return {
-      controller: 'MapCtrl',
-      templateUrl: 'app/plugins/panels/map/module.html'
+      controller: MapCtrl,
+      templateUrl: 'app/plugins/panel/map/module.html'
     };
-  });
+  }
 
-  module.controller('MapCtrl', function($scope, $rootScope, panelSrv, panelHelper, annotationsSrv) {
+  function MapCtrl($scope, $rootScope, panelSrv, panelHelper, annotationsSrv) {
 
     $scope.panelMeta = new PanelMeta({
       panelName: 'Map',
@@ -84,5 +81,9 @@ function (angular, app, _, kbn, TimeSeries, PanelMeta) {
     };
 
     $scope.init();
-  });
+  }
+
+  return {
+    panel: panelMap
+  };
 });
