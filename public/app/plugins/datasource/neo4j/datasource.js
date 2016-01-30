@@ -46,7 +46,7 @@ function () {
             nodes: [],
             edges: []
           }, nodeIds = {}, edgeIds = {},
-          colors={'Client': '#DE9BF9', 'FQDN': '#68BDF6', 'Host': '#6DCE9E'};
+          colors={'Client': '#6E9ECE', 'Virus': '#FF0000', 'Host': '#6DCE9E'};
         res.data.results[0].data.forEach(function(row) {
           var graph = row.graph;
           graph.nodes.forEach(function(node) {
@@ -55,7 +55,7 @@ function () {
               var label = node.labels[0];
               g.nodes.push({
                 id: node.id,
-                label: label === 'FQDN' ? node.properties.name: node.properties.ip,
+                label: label === 'Virus' ? node.properties.name: node.properties.ip,
                 x: Math.random(),
                 y: Math.random(),
                 size: 10,
@@ -92,8 +92,9 @@ function () {
             data: {
               "statements": [
                              {
-                               "statement": "match(client)-[:Query]->(host)<-[r]-(Virus) return client, host, r, Virus limit 1000",
-                               "resultDataContents": [
+                                "statement": "match (client:Client)-[q:Query]->(host:Host)<-[r]-(virus:Virus) "
+                                + "return distinct client, host, q, r, virus",
+                                "resultDataContents": [
                                  "row",
                                  "graph"
                                ],
