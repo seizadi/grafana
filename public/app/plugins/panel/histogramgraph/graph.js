@@ -4,7 +4,8 @@ define([
   'lodash',
   'jquery',
   'sigma',
-  'force2Atlas'
+  'sigma.force2Atlas',
+  'sigma.dragNodes'
 ],
 function (angular, app, _, $, sigma) {
   'use strict';
@@ -12,7 +13,7 @@ function (angular, app, _, $, sigma) {
   var module = angular.module('grafana.directives', []);
   app.useModule(module);
 
-  module.directive('tabGraph', function() {
+  module.directive('tabGraph', function($timeout) {
 
     return {
       link: function(scope, elem) {
@@ -56,7 +57,7 @@ function (angular, app, _, $, sigma) {
           }
 
           // Instantiate sigma:
-          sigmaInstance = new sigma.sigma({
+          sigmaInstance = new sigma({
             graph: data,
             renderer: {
               // IMPORTANT:
@@ -88,6 +89,13 @@ function (angular, app, _, $, sigma) {
               adjustSizes: true,
           };
           sigmaInstance.startForceAtlas2(forceConfig);
+          $timeout(stopForceAtlas2, 3000);
+        }
+
+        function stopForceAtlas2() {
+          sigmaInstance.stopForceAtlas2();
+          // Initialize the dragNodes plugin:
+          sigma.plugins.dragNodes(sigmaInstance, sigmaInstance.renderers[0]);
         }
       }
     };
