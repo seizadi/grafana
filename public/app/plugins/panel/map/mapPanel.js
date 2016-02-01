@@ -75,7 +75,8 @@ function (angular, app, _, $, L) {
           if(!data) {
             return;
           }
-          if(data.length > 0 && data[0].datapoints[0].length < 3) {
+          // check result set has geo info
+          if(data.length === 0 || data[0].datapoints.length === 0  || data[0].datapoints[0].length < 3) {
             return;
           }
           data.forEach(function(row) {
