@@ -26,7 +26,6 @@ function (angular, app, _, $, L) {
           data = renderData.data;
           buildAnnotationCache(renderData.annotations);
           render(renderData);
-          scope.panelRenderingComplete();
         });
 
         function buildAnnotationCache(events) {
