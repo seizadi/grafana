@@ -36,7 +36,7 @@ var panelTemplate = `
 
         <ul class="gf-tabs">
           <li class="gf-tabs-item" ng-repeat="tab in ::ctrl.editorTabs">
-            <a class="gf-tabs-link" ng-click="ctrl.editorTabIndex = $index" ng-class="{active: ctrl.editorTabIndex === $index}">
+            <a class="gf-tabs-link" ng-click="ctrl.changeTab($index)" ng-class="{active: ctrl.editorTabIndex === $index}">
               {{::tab.title}}
             </a>
           </li>
@@ -65,8 +65,8 @@ module.directive('grafanaPanel', function() {
     link: function(scope, elem) {
       var panelContainer = elem.find('.panel-container');
       var ctrl = scope.ctrl;
-      scope.$watchGroup(['ctrl.fullscreen', 'ctrl.height', 'ctrl.panel.height', 'ctrl.row.height'], function() {
-        panelContainer.css({ minHeight: ctrl.height || ctrl.panel.height || ctrl.row.height, display: 'block' });
+      scope.$watchGroup(['ctrl.fullscreen', 'ctrl.containerHeight'], function() {
+        panelContainer.css({minHeight: ctrl.containerHeight});
         elem.toggleClass('panel-fullscreen', ctrl.fullscreen ? true : false);
       });
     }
@@ -121,7 +121,7 @@ module.directive('panelResizer', function($rootScope) {
         }
 
         scope.$apply(function() {
-          scope.$broadcast('render');
+          ctrl.render();
         });
       }
 

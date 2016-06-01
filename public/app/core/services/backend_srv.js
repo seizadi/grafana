@@ -96,6 +96,11 @@ function (angular, _, coreModule, config) {
       var requestIsLocal = options.url.indexOf('/') === 0;
       var firstAttempt = options.retry === 0;
 
+      if (requestIsLocal && options.headers && options.headers.Authorization) {
+        options.headers['X-DS-Authorization'] = options.headers.Authorization;
+        delete options.headers.Authorization;
+      }
+
       return $http(options).then(null, function(err) {
         // handle unauthorized for backend requests
         if (requestIsLocal && firstAttempt  && err.status === 401) {
@@ -103,6 +108,13 @@ function (angular, _, coreModule, config) {
             options.retry = 1;
             return self.datasourceRequest(options);
           });
+        }
+
+        //populate error obj on Internal Error
+        if (_.isString(err.data) && err.status === 500) {
+          err.data = {
+            error: err.statusText
+          };
         }
 
         // for Prometheus

@@ -88,6 +88,7 @@ var (
 	AutoAssignOrgRole  string
 	VerifyEmailEnabled bool
 	LoginHint          string
+	DefaultTheme       string
 
 	// Http auth
 	AdminUser     string
@@ -124,6 +125,7 @@ var (
 	appliedEnvOverrides          []string
 
 	ReportingEnabled   bool
+	CheckForUpdates    bool
 	GoogleAnalyticsId  string
 	GoogleTagManagerId string
 
@@ -453,6 +455,7 @@ func NewConfigContext(args *CommandLineArgs) error {
 	AutoAssignOrgRole = users.Key("auto_assign_org_role").In("Editor", []string{"Editor", "Admin", "Read Only Editor", "Viewer"})
 	VerifyEmailEnabled = users.Key("verify_email_enabled").MustBool(false)
 	LoginHint = users.Key("login_hint").String()
+	DefaultTheme = users.Key("default_theme").String()
 
 	// anonymous access
 	AnonymousEnabled = Cfg.Section("auth.anonymous").Key("enabled").MustBool(false)
@@ -475,6 +478,7 @@ func NewConfigContext(args *CommandLineArgs) error {
 
 	analytics := Cfg.Section("analytics")
 	ReportingEnabled = analytics.Key("reporting_enabled").MustBool(true)
+	CheckForUpdates = analytics.Key("check_for_updates").MustBool(true)
 	GoogleAnalyticsId = analytics.Key("google_analytics_ua_id").String()
 	GoogleTagManagerId = analytics.Key("google_tag_manager_id").String()
 
@@ -524,6 +528,17 @@ var logLevels = map[string]int{
 	"Critical": 5,
 }
 
+func getLogLevel(key string, defaultName string) (string, int) {
+	levelName := Cfg.Section(key).Key("level").In(defaultName, []string{"Trace", "Debug", "Info", "Warn", "Error", "Critical"})
+
+	level, ok := logLevels[levelName]
+	if !ok {
+		log.Fatal(4, "Unknown log level: %s", levelName)
+	}
+
+	return levelName, level
+}
+
 func initLogging(args *CommandLineArgs) {
 	//close any existing log handlers.
 	log.Close()
@@ -531,8 +546,12 @@ func initLogging(args *CommandLineArgs) {
 	LogModes = strings.Split(Cfg.Section("log").Key("mode").MustString("console"), ",")
 	LogsPath = makeAbsolute(Cfg.Section("paths").Key("logs").String(), HomePath)
 
+	defaultLevelName, _ := getLogLevel("log", "Info")
+
 	LogConfigs = make([]util.DynMap, len(LogModes))
+
 	for i, mode := range LogModes {
+
 		mode = strings.TrimSpace(mode)
 		sec, err := Cfg.GetSection("log." + mode)
 		if err != nil {
@@ -540,12 +559,7 @@ func initLogging(args *CommandLineArgs) {
 		}
 
 		// Log level.
-		levelName := Cfg.Section("log."+mode).Key("level").In("Trace",
-			[]string{"Trace", "Debug", "Info", "Warn", "Error", "Critical"})
-		level, ok := logLevels[levelName]
-		if !ok {
-			log.Fatal(4, "Unknown log level: %s", levelName)
-		}
+		_, level := getLogLevel("log."+mode, defaultLevelName)
 
 		// Generate log configuration.
 		switch mode {

@@ -5,42 +5,38 @@ import './panel';
 import _ from 'lodash';
 import {MetricsPanelCtrl} from 'app/plugins/sdk';
 
-var panelDefaults = {
-  links: [],
-  datasource: null,
-  maxDataPoints: 3,
-  interval: null,
-  targets: [{}],
-  cacheTimeout: null,
-  nullText: null,
-  nullPointMode: 'connected'
-};
-
 class HistogramGraphCtrl extends MetricsPanelCtrl {
   static templateUrl = 'module.html';
 
   annotationsPromise: any;
 
+  panelDefaults = {
+    links: [],
+    datasource: null,
+    maxDataPoints: 3,
+    interval: null,
+    targets: [{}],
+    cacheTimeout: null,
+    nullText: null,
+    nullPointMode: 'connected'
+  };
+
+
   /** @ngInject */
   constructor($scope, $injector, private annotationsSrv) {
     super($scope, $injector);
-    _.defaults(this.panel, panelDefaults);
-  }
-
-  initEditMode() {
-    super.initEditMode();
-    this.icon = "fa fa-dashboard";
+    _.defaults(this.panel, this.panelDefaults);
   }
 
   refreshData(datasource) {
     this.annotationsPromise = this.annotationsSrv.getAnnotations(this.dashboard);
 
     return this.issueQueries(datasource)
-    .then(res => this.dataHandler(res))
-    .catch(err => {
-      this.render([]);
-      throw err;
-    });
+      .then(res => this.dataHandler(res))
+      .catch(err => {
+        this.render([]);
+        throw err;
+      });
   }
 
   loadSnapshot(snapshotData) {
@@ -64,10 +60,6 @@ class HistogramGraphCtrl extends MetricsPanelCtrl {
       this.render(results);
     });
   };
-
-  render(data?: any) {
-    this.broadcastRender(data);
-  }
 
 }
 

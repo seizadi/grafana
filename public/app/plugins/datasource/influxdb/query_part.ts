@@ -231,11 +231,38 @@ QueryPartDef.register({
 });
 
 QueryPartDef.register({
+  type: 'spread',
+  addStrategy: addTransformationStrategy,
+  category: categories.Transformations,
+  params: [],
+  defaultParams: [],
+  renderer: functionRenderer,
+});
+
+QueryPartDef.register({
   type: 'non_negative_derivative',
   addStrategy: addTransformationStrategy,
   category: categories.Transformations,
   params: [{ name: "duration", type: "interval", options: ['1s', '10s', '1m', '5m', '10m', '15m', '1h']}],
   defaultParams: ['10s'],
+  renderer: functionRenderer,
+});
+
+QueryPartDef.register({
+  type: 'difference',
+  addStrategy: addTransformationStrategy,
+  category: categories.Transformations,
+  params: [],
+  defaultParams: [],
+  renderer: functionRenderer,
+});
+
+QueryPartDef.register({
+  type: 'moving_average',
+  addStrategy: addTransformationStrategy,
+  category: categories.Transformations,
+  params: [{ name: "window", type: "number", options: [5, 10, 20, 30, 40]}],
+  defaultParams: [10],
   renderer: functionRenderer,
 });
 

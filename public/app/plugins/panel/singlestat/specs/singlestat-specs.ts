@@ -23,12 +23,11 @@ describe('SingleStatCtrl', function() {
 
         beforeEach(function() {
           setupFunc();
-          ctx.datasource.query = sinon.stub().returns(ctx.$q.when({
-            data: [{target: 'test.cpu1', datapoints: ctx.datapoints}]
-          }));
+          var data = [
+            {target: 'test.cpu1', datapoints: ctx.datapoints}
+          ];
 
-          ctx.ctrl.refreshData(ctx.datasource);
-          ctx.scope.$digest();
+          ctx.ctrl.onDataReceived(data);
           ctx.data = ctx.ctrl.data;
         });
       };
@@ -85,4 +84,29 @@ describe('SingleStatCtrl', function() {
       expect(ctx.data.valueFormated).to.be('OK');
     });
   });
+
+  singleStatScenario('When range to text mapping is specifiedfor first range', function(ctx) {
+    ctx.setup(function() {
+      ctx.datapoints = [[41,50]];
+      ctx.ctrl.panel.mappingType = 2;
+      ctx.ctrl.panel.rangeMaps = [{from: '10', to: '50', text: 'OK'},{from: '51', to: '100', text: 'NOT OK'}];
+    });
+
+    it('Should replace value with text OK', function() {
+      expect(ctx.data.valueFormated).to.be('OK');
+    });
+  });
+
+  singleStatScenario('When range to text mapping is specified for other ranges', function(ctx) {
+    ctx.setup(function() {
+      ctx.datapoints = [[65,75]];
+      ctx.ctrl.panel.mappingType = 2;
+      ctx.ctrl.panel.rangeMaps = [{from: '10', to: '50', text: 'OK'},{from: '51', to: '100', text: 'NOT OK'}];
+    });
+
+    it('Should replace value with text NOT OK', function() {
+      expect(ctx.data.valueFormated).to.be('NOT OK');
+    });
+  });
+
 });

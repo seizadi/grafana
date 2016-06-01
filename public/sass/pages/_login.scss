@@ -55,6 +55,10 @@
     color: $white;
   }
 
+  &:focus {
+    outline: 0;
+  }
+
   font-weight: bold;
   display: inline-block;
   width: 170px;
@@ -130,7 +134,7 @@
     border-bottom: 1px solid $gray-1;
 
     .login-divider-text {
-      background-color: $dark-3;
+      background-color: $panel-bg;
       color: $gray-2;
       padding: 0 10px;
     }
@@ -178,7 +182,7 @@
 }
 
 @include media-breakpoint-up(md) {
-  .login-box-logo {      
+  .login-box-logo {
     img {
       width: 125px;
     }
@@ -188,4 +192,3 @@
     }
   }
 }
-
