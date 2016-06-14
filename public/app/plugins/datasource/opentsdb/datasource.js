@@ -162,12 +162,23 @@ function (angular, _, dateMath) {
       });
     };
 
-    this._performMetricKeyValueLookup = function(metric, key) {
-      if(!metric || !key) {
+    this._performMetricKeyValueLookup = function(metric, keys) {
+
+      if(!metric || !keys) {
         return $q.when([]);
       }
 
-      var m = metric + "{" + key + "=*}";
+      var keysArray = keys.split(",").map(function(key) {
+        return key.trim();
+      });
+      var key = keysArray[0];
+      var keysQuery = key + "=*";
+
+      if (keysArray.length > 1) {
+        keysQuery += "," + keysArray.splice(1).join(",");
+      }
+
+      var m = metric + "{" + keysQuery + "}";
 
       return this._get('/api/search/lookup', {m: m, limit: 3000}).then(function(result) {
         result = result.data.results;
@@ -225,7 +236,7 @@ function (angular, _, dateMath) {
 
       var metrics_regex = /metrics\((.*)\)/;
       var tag_names_regex = /tag_names\((.*)\)/;
-      var tag_values_regex = /tag_values\((.*),\s?(.*)\)/;
+      var tag_values_regex = /tag_values\((.*?),\s?(.*)\)/;
       var tag_names_suggest_regex = /suggest_tagk\((.*)\)/;
       var tag_values_suggest_regex = /suggest_tagv\((.*)\)/;
 
@@ -403,10 +414,7 @@ function (angular, _, dateMath) {
         } else {
           return _.findIndex(options.targets, function(target) {
             if (target.filters && target.filters.length > 0) {
-              return target.metric === metricData.metric &&
-              _.all(target.filters, function(filter) {
-                return filter.tagk === interpolatedTagValue === "*";
-              });
+              return target.metric === metricData.metric;
             } else {
               return target.metric === metricData.metric &&
               _.all(target.tags, function(tagV, tagK) {
